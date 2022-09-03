@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/imgs/favicon.ico">
+  <title>monkey</title>
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="section"></div>
+    <textarea class="send" placeholder="请输出内容，按Enter发送"></textarea>
+  </div>
+
+  <script>
+    const send = document.querySelector('.send');
+    const box = document.querySelector('.section');
+    if (!window.WebSocket) {
+      return alert('您的浏览器不支持WebSocket')
+    }
+    const ws = new WebSocket('ws://localhost:5566/ws/monkey');
+    const ws2 = new WebSocket('ws://localhost:5566/ws/lemurData');
+
+    send.onkeyup = function (e) {
+      if (e.keyCode === 13) {
+        if (this.value.trim() !== '') {
+          let val = this.value;
+          this.value = '';
+          ws.send(val);
+        } else {
+          alert('内容不能为空~');
+        }
+      }
+    }
+
+    function createRightDom (val) {
+      return `
+      <div class="msg right">
+        <img src="/imgs/monkey-34121.jpg" >
+        <span>${val}</span>
+      </div>
+      `
+    }
+
+    function createLeftDom (val) {
+      return `
+      <div class="msg left">
+        <img src="/imgs/lemur-3245.png" >
+        <span>${val}</span>
+      </div>
+      `
+    }
+
+    function smooth(dom){
+      dom.scrollTo({ top: dom.scrollHeight, behavior: "smooth" });
+    }
+
+    // monkey
+    ws.onmessage = (res) => {
+      box.innerHTML += createRightDom(res.data);
+      smooth(box);
+    }
+
+    // lemurData
+    ws2.onmessage = (res) => {
+      box.innerHTML += createLeftDom(res.data);
+      smooth(box);
+    }
+
+    ws.onopen = () => { console.log('服务连接成功，user：monkey'); }
+    ws.onclose = () => { console.log('服务连接断开'); }
+    ws.onerror = (err) => { console.error(err); }
+  </script>
+</body>
+
+</html>

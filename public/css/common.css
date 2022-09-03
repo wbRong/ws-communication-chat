@@ -1,0 +1,27 @@
+:root { --color: #fff; }
+
+* { margin: 0; padding: 0; outline: none; text-decoration: none; box-sizing: border-box; }
+
+.wrap { padding: 8px; }
+
+.section { width: 100%; height: 70vh; background: #e8e4e4; margin-bottom: 10px; overflow-x: hidden; padding: 8px; }
+
+.section .msg { display: flex; justify-content: flex-start; margin-top: 10px; }
+
+.section .msg.right { flex-direction: row-reverse; }
+
+.section .msg.right img { margin-left: 10px; }
+
+.section .msg.left img { margin-right: 10px; }
+
+.section img { max-width: 55px; max-height: 55px; border-radius: 50%; }
+
+.section span { background-color: #fff; border-radius: 5px; position: relative; padding: 10px 12px; }
+
+.msg span::after { content: ''; width: 0; height: 0; border: 8px solid transparent; position: absolute; top: 20px; z-index: 1; }
+
+.msg.left span::after { left: -15px; border-right-color: var(--color); }
+
+.msg.right span::after { right: -15px; border-left-color: var(--color); }
+
+.send { width: 100%; min-height: 22vh; padding: 5px; font-size: 18px; font-weight: bold; text-indent: 0.5em; }
